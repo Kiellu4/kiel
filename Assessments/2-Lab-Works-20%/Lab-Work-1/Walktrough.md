@@ -142,18 +142,6 @@ nxc ssh <TARGET_IP> -u userlist.txt -p passlist.txt
 ![image](https://github.com/user-attachments/assets/89705868-51e3-41cb-af80-cc513af07cce)
 ![image](https://github.com/user-attachments/assets/915c2834-0a01-4c65-8111-9d1d6ecce0dd)
 
-> 🔎 **Note:** Successful logins often have different response lengths or status codes like 302 (redirect).
-
----
-
-## ⚠️ Common Problems and How to Fix Them
-
-| Problem                        | Cause                         | Solution                                  |
-| ------------------------------ | ----------------------------- | ----------------------------------------- |
-| Too many failed login attempts | Account lockout/ Rate limiting| Add delay or reduce threads (`-t 1`) |
-|CAPTCHA on login form protections| HTTP brute force fails       | May require manual testing or CAPTCHA bypass techniques |
-| SSH protection (e.g., fail2ban)| IP gets blocked after failures| Rotate IPs with VPN or proxychains        |
-
 ---
 
 # 📡 Task 3: Sniffing Network Traffic
@@ -168,29 +156,74 @@ Captured network traffic during login attempts with cracked credentials.
 1. Open Wireshark.
 > **Command:** 
 ```bash
-sudo wireshark
+wireshark
 ```
-2. Start capture on the network interface connected to the target.
-3. Apply filters:
-  - FTP: tcp.port == 21
-  - TELNET: tcp.port == 23
-  - SSH: tcp.port == 22
-  - HTTP: tcp.port == 80
-> **Command:** Combine all tcp.port in one filter.
+  - Choose `eth0` for sniffing traffic.
+> ![image](https://github.com/user-attachments/assets/1ed5a265-d331-452b-97ad-7ddc0aa411ff)
+
+2. Start capture on the network interface connected to the target for the FTP.
+   - (1) FTP command:
 ```bash
-tcp.port == 21 || tcp.port == 22 || tcp.port == 23 || tcp.port == 80
+ftp <target-ip> 
 ```
-4. Identify unencrypted traffic containing credentials.
+   - Enter the `Username = msfadmin` and `Password = msfadmin` as we got exploit from brute force attack before.
 
-## 🔹 Screenshots
-- **FTP sniffed:**
-  > 
+> ![image](https://github.com/user-attachments/assets/27f207e0-16f9-46ca-b0d4-d9377f1f90bf)
 
-- **TELNET sniffed:**
-  > 
+3. Get the FTP packet for FTP.
+   - Choose the first one packet that have `FTP` and right click.
+   - Go to `Follow` and click `TCP Stream`.
+> ![image](https://github.com/user-attachments/assets/18e1ff89-99a4-4991-9578-44e845c4fc92)
 
-- **SSH encrypted:**
-  >
+4. Identify unencrypted traffic containing credentials for the FTP.
+   - **FTP sniffed:**
+   - As you can see, the file is not encrypted.
+
+> ![image](https://github.com/user-attachments/assets/234116f3-3afc-47a8-9764-93437bebf2b8)
+
+5. Start capture on the network interface connected to the target for the SSH.
+   - (2) SSH command:
+```bash
+ssh -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedKeyTypes=+ssh-rsa <username>@<target-ip> 
+```
+   - Enter the `Username = msfadmin` and `Password = msfadmin` as we got exploit from brute force attack before.
+
+> ![image](https://github.com/user-attachments/assets/cdd503c0-0aa4-4b2a-ab51-47e538aa65f9)
+
+6. Get the FTP packet for the SSH.
+   - Choose the new one packet until last that have `FTP` and right click.
+   - For me, I choose packet at `no.78` because packet 1-74 for FTP.
+   - Go to `Follow` and click `TCP Stream`.
+
+> ![image](https://github.com/user-attachments/assets/a03564e9-0555-4b55-bbad-b7e10c407053)
+
+7. Identify unencrypted traffic containing credentials for the SSH.
+   - **SSH sniffed:**
+   - As you can see, the file is encrypted.
+     
+> ![image](https://github.com/user-attachments/assets/3febb274-a848-4800-9026-0bfb7e6e89bc)
+
+8. Start capture on the network interface connected to the target for the Telnet.
+   - (3) Telnet command:
+```bash
+telnet <target-ip> 
+```
+   - Enter the `Username = msfadmin` and `Password = msfadmin` as we got exploit from brute force attack before.
+
+> ![image](https://github.com/user-attachments/assets/375398e4-f50b-4907-b557-1fd5d98be295)
+
+9. Get the FTP packet for the SSH.
+   - Choose the new one packet until last that have `FTP` and right click.
+   - For me, I choose packet at `no.78` because packet 1-74 for FTP.
+   - Go to `Follow` and click `TCP Stream`.
+  
+> ![image](https://github.com/user-attachments/assets/0812d0bd-574a-4268-865a-2447855ead7e)
+
+10. Identify unencrypted traffic containing credentials for the SSH.
+   - **Telnet sniffed:**
+   - As you can see, the file is not encrypted. 
+
+> ![image](https://github.com/user-attachments/assets/9ff0a3b6-b908-4ce2-8363-f4d4b42100b3)
 
 ---
 
@@ -202,19 +235,6 @@ tcp.port == 21 || tcp.port == 22 || tcp.port == 23 || tcp.port == 80
 | TELNET   | ❌ No       | ✅ Yes (cleartext)     |
 | SSH      | ✅ Yes      | ❌ No (encrypted)      |
 | HTTP     | ❌ No       | ✅ Yes (cleartext)     |
-
----
-
-## 🔹 Screenshots
-
-- **FTP sniffed:**
-  > 
-
-- **TELNET sniffed:**
-  > 
-
-- **SSH encrypted:**
-  > 
 
 ---
 
