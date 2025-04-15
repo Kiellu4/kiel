@@ -95,10 +95,19 @@ nxc ssh <TARGET_IP> -u userlist.txt -p passlist.txt
 - Ensure **Intercept is ON**.
 - Click **Open Browser** to start Burp’s embedded browser.
 
-### Step 2: Capture Login Request
-- Visit the login page (e.g., `http://<TARGET_IP>/login`) using Burp’s browser.
-- Enter any dummy username and password to trigger a login attempt.
-- Burp will capture the HTTP request automatically.
+![image](https://github.com/user-attachments/assets/903de471-2a8b-4ab8-809c-e6a17351adbc)
+
+### Step 2: Search Ip Address Metasplotable2
+- Open Firefox browser.
+- Search the <TARGET_IP> and click Enter.
+- Then, click the DVWA section.
+- Fill the Username = 'Admin' and Password = 'Password'.
+- At the left, choose Brute Force.
+- Fill anything to the Username and Password.
+
+![image](https://github.com/user-attachments/assets/38f00c6b-9bec-45e0-b9d8-6926866fc284)
+![image](https://github.com/user-attachments/assets/fa27b23c-2c67-4436-b676-f88cf55ab4b3)
+![image](https://github.com/user-attachments/assets/ff3072a6-2c80-45bf-8b6a-a07c3cfe6e4d)
 
 ### Step 3: Forward the Request
 - In Burp’s `Proxy > Intercept` tab, click **Forward** to send the intercepted request.
@@ -184,16 +193,6 @@ tcp.port == 21 || tcp.port == 22 || tcp.port == 23 || tcp.port == 80
   >
 
 ---
-
-**Tool Used:** tcpdump
-
----
-## 🔹 Steps
-> **Command:** to use tcpdump and gather port 21,22,23,80 in capture.pcap.
-```bash
-sudo tcpdump -i eth0 port 21 or port 23 or port 22 or port 80 -w capture.pcap
- ```
-Analyze capture.pcap in Wireshark.
 
 ## 🔹 Observations
 
