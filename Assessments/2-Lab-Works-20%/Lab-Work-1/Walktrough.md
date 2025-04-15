@@ -242,7 +242,6 @@ telnet <target-ip>
 
 | Problem                         | Solution                                         |
 | -------------------------------- | ------------------------------------------------ |
-| SMB enumeration slow            | Used `-v` (verbose) option to monitor progress   |
 | SSH brute-force blocked quickly | Used `-t 4 -w 5` flags in Hydra to slow attack    |
 | HTTP login page rate-limited     | Introduced delay between Burp Intruder requests  |
 
