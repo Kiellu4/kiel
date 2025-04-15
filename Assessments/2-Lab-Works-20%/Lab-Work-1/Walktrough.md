@@ -97,50 +97,50 @@ nxc ssh <TARGET_IP> -u userlist.txt -p passlist.txt
 
 ![image](https://github.com/user-attachments/assets/903de471-2a8b-4ab8-809c-e6a17351adbc)
 
-### Step 2: Search Ip Address Metasplotable2
+### Step 2: Search Ip Address Metasploitable2
 - Open Firefox browser.
 - Search the <TARGET_IP> and click Enter.
 - Then, click the DVWA section.
 - Fill the Username = 'Admin' and Password = 'Password'.
 - At the left, choose Brute Force.
-- Fill anything to the Username and Password.
+- Fill anything to the Username and Password (Example: Username=aaa and Password=aaa).
 
 ![image](https://github.com/user-attachments/assets/38f00c6b-9bec-45e0-b9d8-6926866fc284)
 ![image](https://github.com/user-attachments/assets/fa27b23c-2c67-4436-b676-f88cf55ab4b3)
 ![image](https://github.com/user-attachments/assets/ff3072a6-2c80-45bf-8b6a-a07c3cfe6e4d)
 
 ### Step 3: Forward the Request
-- In Burp’s `Proxy > Intercept` tab, click **Forward** to send the intercepted request.
+- In Burp’s `Proxy > Intercept` tab, Everytime the intercept get request keep click **Forward** to send the intercepted request.
 - If multiple requests are caught, continue forwarding until the page loads.
+- Go to `Proxy > HTTP history` tab, and find `http://192.168.65.54/dvwa/vulnerabilities/brute/?username=aaa&password=aaa&Login=Login` then right click and choose **Send to Intruder**.
+
+![image](https://github.com/user-attachments/assets/27aba17b-6817-427c-8e4b-419684b89047)
 
 ### Step 4: Disable Intercept
 - Switch **Intercept is OFF** so that future browser requests are not paused.
 
-### Step 5: Send to Intruder
-- In **Proxy > HTTP History**, find the POST request to the login page.
-- Right-click the request → **Send to Intruder**.
+![image](https://github.com/user-attachments/assets/f384e277-e41a-4d23-9105-0d203cb00d6e)
 
-### Step 6: Configure the Intruder Attack
+### Step 5: Configure the Intruder Attack
 - In **Intruder** tab:
   - Set **Attack Type** to **Cluster Bomb**.
   - Highlight and mark the username and password fields as **payload positions**.
+  - On the **Payload position**, Load with the file in the with the **Username list** (`userlist.txt`) and **Password list** (`passlist.txt`). (`Example:/usr/share/wordlists`)
 
-### Step 7: Load Payload Lists
-- Payload Set 1: Load `userlist.txt` (usernames).
-- Payload Set 2: Load `passlist.txt` (passwords).
+![image](https://github.com/user-attachments/assets/b2962371-7934-4a79-90ff-dd05b0adb37d)
 
-### Step 8: Start Attack
+### Step 6: Start Attack
 - Click **Start Attack**.
 - Monitor for:
-  - Changes in **Status Codes**.
-  - Differences in **Response Length**.
-  - Presence of success indicators (e.g., `Welcome`, dashboard redirects).
+  - Changes in **Response**.
+  - Click the **Render** for visual output.
+  - There are `25 request`. So, you need to try and error untuil you find the correct output.
+  - If the access successful the output will be `Welcome to the password protected area admin`.
+  - If not, the output will be `Username and/or password incorrect`.
 
-![image](https://github.com/user-attachments/assets/92f85079-5876-4875-882b-4a8b3bb9c1e1)
-![image](https://github.com/user-attachments/assets/250a4923-292c-4ae5-b71d-a0daa35b4d97)
-![image](https://github.com/user-attachments/assets/47249397-aa3d-4f59-8071-fd5ba68888c1)
-![image](https://github.com/user-attachments/assets/5c3fd87b-a8a9-42b8-819c-5ddc41cba45d)
-![image](https://github.com/user-attachments/assets/13994a4e-4eb3-4c36-89c1-906e18b9ac4e)
+![image](https://github.com/user-attachments/assets/3312dc4f-a720-4339-b1a1-db4c4133eac3)
+![image](https://github.com/user-attachments/assets/89705868-51e3-41cb-af80-cc513af07cce)
+![image](https://github.com/user-attachments/assets/915c2834-0a01-4c65-8111-9d1d6ecce0dd)
 
 > 🔎 **Note:** Successful logins often have different response lengths or status codes like 302 (redirect).
 
