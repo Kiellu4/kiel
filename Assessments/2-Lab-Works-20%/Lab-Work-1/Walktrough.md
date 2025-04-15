@@ -255,8 +255,8 @@ telnet <target-ip>
 | FTP      | Plaintext transmission     | Use FTPS or SFTP                | ✅ FTPS / SFTP               |
 | TELNET   | Plaintext transmission     | Disable TELNET, use SSH         | ✅ SSH                      |
 | HTTP     | No encryption              | Use HTTPS with SSL/TLS          | ✅ HTTPS                    |
-| SMB      | Weak usernames             | Harden SMB settings, disable guest access | ✅ Enforce SMB Signing |
-| Passwords | Easily brute-forced        | Strong password policies + MFA  | 🔒 Strong Passwords + Account Lockout |
+| SSH      | Weak encryption           | Update latest SSH or limit SSH using (Authorize users) | ✅ Update SSH |
+| Passwords | Easily brute-forced       | Strong password policies + MFA  | 🔒 Strong Passwords + Account Lockout |
 
 ---
 
